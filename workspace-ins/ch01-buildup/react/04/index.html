@@ -27,11 +27,14 @@
 
     function TodoInput({ addItem }){
       const [title, setTitle] = React.useState('');
+      const [nextId, setNextId] = React.useState(4);
 
       const handleAdd = () => {
         if(title.trim() !== ''){
-          const item = { _id: 4, title, done: false };
+          const item = { _id: nextId, title, done: false };
           addItem(item);
+          
+          setNextId(nextId + 1);
           setTitle('');
         }
       };
@@ -93,15 +96,15 @@
 
     function App(){
       // 샘플 목록
-      const itemList = [
+      const [itemList, setItemList] = React.useState([
         { _id: 1, title: '두부', done: true} ,
         { _id: 2, title: '계란', done: false },
         { _id: 3, title: '라면', done: true },
-      ];
+      ]);
 
       const addItem = (item) => {
-        console.log(item);
-        itemList.push(item);
+        const newItemList = [...itemList, item]; // 객체일 경우 새로운 객체로 만들어야 화면 갱신이 됨
+        setItemList(newItemList); // setter를 이용해야 화면 갱신이 됨
       };
 
       return (
