@@ -1,16 +1,15 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function TodoInput({ addItem }) {
   const [title, setTitle] = useState("");
-  const [nextId, setNextId] = useState(4);
+  const titleElem = useRef(null);
 
   const handleAdd = () => {
     if (title.trim() !== "") {
-      const item = { _id: nextId, title, done: false };
-      addItem(item);
-      setNextId(nextId + 1);
+      addItem(title);
       setTitle("");
+      titleElem.current.focus();
     }
   };
 
@@ -26,6 +25,7 @@ export default function TodoInput({ addItem }) {
         onKeyUp={handleKeyUp}
         value={title}
         onChange={(event) => setTitle(event.target.value)}
+        ref={titleElem}
       />
       <button type="button" onClick={handleAdd}>
         추가
