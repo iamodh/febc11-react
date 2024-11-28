@@ -1,55 +1,44 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 function TodoEdit() {
-  const [todo, setTodo] = useState({
-    title: "잠자기",
-    content: "주말에 수업 끝나면 잠이나 실컷 자야지",
-    done: false,
-  });
+  const { item } = useOutletContext();
+  const navigate = useNavigate();
 
-  console.log(JSON.stringify(todo));
+  const onSubmit = (event) => {
+    try {
+      event.preventDefault();
+      // API 서버에 수정 요청
 
-  const handleChange = (e) => {
-    const value =
-      e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    setTodo({
-      ...todo,
-      [e.target.id]: value,
-    });
+      navigate("..", { relative: true }); // 상대경로로 이동
+      navigate(`/list/${item._id}`, { replace: true }); // window.history.replaceState()
+      navigate(-1); // window.history.go(-1)
+    } catch (err) {
+      console.log(err);
+      alert("할일 수정에 실패하였습니다.");
+    }
+
+    alert("할일이 수정되었습니다.");
   };
   return (
     <>
       <h2>할일 수정</h2>
       <div className="todo">
-        <form>
+        <form onSubmit={onSubmit}>
           <label htmlFor="title">제목 :</label>
-          <input
-            type="text"
-            id="title"
-            value={todo.title}
-            onChange={handleChange}
-            autoFocus
-          />
+          <input type="text" id="title" defaultValue={item.title} autoFocus />
           <br />
           <label htmlFor="content">내용 :</label>
           <textarea
             id="content"
             cols="23"
             rows="5"
-            defaultValue={todo.content}
-            onChange={handleChange}
-          ></textarea>
-          <br />
-          <label htmlFor="done">완료 :</label>
-          <input
-            type="checkbox"
-            id="done"
-            checked={todo.done}
-            onChange={handleChange}
+            defaultValue={item.content}
           />
           <br />
-          <Link to="/list/1">수정</Link>
+          <label htmlFor="done">완료 :</label>
+          <input type="checkbox" id="done" defaultChecked />
+          <br />
+          <button type="submit">수정</button>
           <Link to="/list/1">취소</Link>
         </form>
       </div>
