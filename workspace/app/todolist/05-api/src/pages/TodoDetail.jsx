@@ -26,8 +26,12 @@ function TodoDetail() {
   const axios = useAxiosInstance();
   // API 서버에서 상세 정보를 조회
   const fetchDetail = async () => {
-    const res = await axios.get(`/todolist/${_id}`);
-    setData(res.data);
+    try {
+      const res = await axios.get(`/todolist/${_id}`);
+      setData(res.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
