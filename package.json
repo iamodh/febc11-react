@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",
+    "jotai": "^2.10.3",
     "react-redux": "^9.1.2",
     "recoil": "^0.7.7",
     "redux": "^5.0.1",
