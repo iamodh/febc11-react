@@ -1,14 +1,12 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 
 function useAxiosInstance() {
   const instance = axios.create({
-    baseURL: "https://11.fesp.shop/",
-    timeout: 5000,
+    baseURL: "https://todo-api.fesp.shop/api",
+    timeout: 1000 * 15,
     headers: {
-      "Content-Type": "application/json",
-      accept: "application/json",
-      "client-id": "00-nike",
+      "Content-Type": "application/json", // request의 데이터 타입
+      accept: "application/json", // response의 데이터 타입
     },
   });
 
@@ -17,7 +15,7 @@ function useAxiosInstance() {
     // 요청이 전달되기 전에 필요한 공통 작업 수행
     config.params = {
       delay: 2000,
-      ...config.params,
+      ...config.params, // 기존 쿼리스트링 복사
     };
     return config;
   });
@@ -31,9 +29,9 @@ function useAxiosInstance() {
       return response;
     },
     (error) => {
-      const message = "잠시후 다시 요청하세요.";
-      toast.error(message);
-
+      // 2xx 외의 범위에 있는 상태 코드는 이 함수가 호출됨
+      // 공통 에러 처리
+      console.error("인터셉터", error);
       return Promise.reject(error);
     }
   );

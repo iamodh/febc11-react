@@ -3,12 +3,13 @@ import Product from "./Product";
 import Shipping from "./Shipping";
 import { SyncLoader } from "react-spinners";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import { Bounce, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const basicShippingFees = 3000;
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const axios = useAxiosInstance();
 
@@ -16,14 +17,12 @@ function App() {
     setIsLoading(true);
 
     try {
-      const res = await axios.get(`/products/${_id}?`, {
+      const res = await axios.get(`/products123/${_id}?`, {
         params: { delay: 2000 },
       });
       setData(res.data.item);
-      setError(null);
     } catch (error) {
       console.log(error);
-      setError({ message: "잠시후 다시 요청하세요." });
     } finally {
       setIsLoading(false);
     }
@@ -51,7 +50,6 @@ function App() {
   return (
     <>
       <h1>01 Nike 상품 상세</h1>
-      {error && <p>{error.message}</p>}
       {isLoading && <SyncLoader />}
       {data && (
         <div>
@@ -77,6 +75,20 @@ function App() {
           <Shipping fees={shippingFees} handlePayment={handlePayment} />
         </div>
       )}
+
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
     </>
   );
 }
