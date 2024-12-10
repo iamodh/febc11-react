@@ -9,6 +9,7 @@ export default function CommentList() {
       <CommentListItem />
 
       <CommentNew />
+
     </section>
   );
 }

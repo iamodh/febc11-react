@@ -32,7 +32,7 @@ function TodoEdit() {
       alert("할일이 수정 되었습니다.");
 
       // 목록을 다시 조회
-      queryClient.invalidateQueries(["todolist", item._id]);
+      queryClient.invalidateQueries({ queryKey: ["todolist", item._id] });
       navigate(-1);
     },
     onError: (err) => {

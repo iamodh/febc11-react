@@ -1,16 +1,48 @@
+import InputError from "@components/InputError";
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+
 export default function CommentNew() {
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const axios = useAxiosInstance();
+  const { type, _id } = useParams();
+
+  const queryClient = useQueryClient();
+
+  const addItem = useMutation({
+    mutationFn: (formData) => axios.post(`/posts/${_id}/replies`, formData),
+    onSuccess: () => {
+      alert("댓글이 등록되었습니다.");
+      queryClient.invalidateQueries({ queryKey: ["posts", _id] });
+      navigate(`/${type}/${_id}`);
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
+
   return (
     <div className="p-4 border border-gray-200 rounded-lg">
       <h4 className="mb-4">새로운 댓글을 추가하세요.</h4>
-      <form action="#">
+      <form onSubmit={handleSubmit(addItem.mutate)}>
         <div className="mb-4">
           <textarea
             rows="3"
             cols="40"
             className="block p-2 w-full text-sm border rounded-lg border-gray-300 bg-gray-50 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             placeholder="내용을 입력하세요."
-            name="comment"
-          ></textarea>
+            {...register("content", { required: "내용은 필수입니다." })}
+          />
+          <InputError target={errors.title} />
 
           <p className="ml-2 mt-1 text-sm text-red-500">내용은 필수입니다.</p>
         </div>
