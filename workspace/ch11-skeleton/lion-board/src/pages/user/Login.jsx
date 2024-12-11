@@ -14,7 +14,12 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      email: "cat@cat.com",
+      password: "11111111",
+    },
+  });
   const axios = useAxiosInstance();
   const login = useMutation({
     mutationFn: (formData) => axios.post(`/users/login`, formData),
