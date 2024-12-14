@@ -3,14 +3,14 @@ import useThemeStore from "@zustand/themeStore";
 export default function ThemeButton() {
   const { isDarkMode, toggleTheme } = useThemeStore();
 
-  const sun = isDarkMode ? "" : "hidden";
-  const moon = isDarkMode ? "hidden" : "";
+  const sun = isDarkMode ? '' : 'hidden';
+  const moon = isDarkMode ? 'hidden' : '';
 
   return (
     <button
       type="button"
-      onClick={toggleTheme}
       data-toggle-dark="dark"
+      onClick={ toggleTheme }
       className="ml-4 flex items-center w-8 h-8 justify-center text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg toggle-dark-state-example hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500 dark:bg-gray-800 focus:outline-none dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
     >
       <svg
